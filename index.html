@@ -3,7 +3,7 @@
     <head>
         <meta charset="utf-8">
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-        <title>TestGame</title>
+        <title>GameCats</title>
         <style>
             html, body {
                 width: 100%;
@@ -135,7 +135,7 @@
             let bridgeOptions = {
                 platforms: {
                     'vk_play': {
-                        gameId: '51870122'
+                        gameId: '51970022'
                     },
                 }
             }
@@ -154,18 +154,18 @@
                     }
 
                     let unityLoader = document.createElement('script')
-                    unityLoader.src = 'Build/1.loader.js'
+                    unityLoader.src = 'Build/Build.loader.js'
                     unityLoader.onload = () => {
                         createUnityInstance(
                             canvas,
                             {
-                                dataUrl: 'Build/1.data',
-                                frameworkUrl: 'Build/1.framework.js',
-                                codeUrl: 'Build/1.wasm',
+                                dataUrl: 'Build/Build.data',
+                                frameworkUrl: 'Build/Build.framework.js',
+                                codeUrl: 'Build/Build.wasm',
                                 streamingAssetsUrl: 'StreamingAssets',
                                 companyName: 'DefaultCompany',
-                                productName: 'TestGame',
-                                productVersion: '1.0',
+                                productName: 'GameCats',
+                                productVersion: '1.0.0.0',
                                 // matchWebGLToCanvasSize: false, // Uncomment this to separately control WebGL canvas render size and DOM element size.
                                 // devicePixelRatio: 1, // Uncomment this to override low DPI rendering on high DPI displays.
                             },
@@ -372,12 +372,6 @@
             }
 
             window.setMinimumDelayBetweenInterstitial = function(options) {
-                if (options) {
-                    options = JSON.parse(options)
-                } else {
-                    options = { }
-                }
-                
                 bridge.advertisement.setMinimumDelayBetweenInterstitial(options)
             }
 
@@ -411,12 +405,8 @@
                 bridge.advertisement.hideBanner()
             }
 
-            window.showInterstitial = function(options) {
-                if (options) {
-                    options = JSON.parse(options)
-                }
-
-                bridge.advertisement.showInterstitial(options)
+            window.showInterstitial = function() {
+                bridge.advertisement.showInterstitial()
             }
 
             window.showRewarded = function() {
@@ -471,8 +461,12 @@
                     })
             }
 
-            window.inviteFriends = function() {
-                bridge.social.inviteFriends()
+            window.inviteFriends = function(options) {
+                if (options) {
+                    options = JSON.parse(options)
+                }
+                
+                bridge.social.inviteFriends(options)
                     .then(() => {
                         sendMessageToUnity('OnInviteFriendsCompleted', 'true')
                     })
@@ -547,10 +541,6 @@
 
             window.getIsLeaderboardNativePopupSupported = function() {
                 return bridge.leaderboard.isNativePopupSupported.toString()
-            }
-
-            window.getIsLeaderboardMultipleBoardsSupported = function() {
-                return bridge.leaderboard.isMultipleBoardsSupported.toString()
             }
 
             window.getIsLeaderboardSetScoreSupported = function() {
@@ -641,8 +631,12 @@
                 return bridge.payments.isSupported.toString()
             }
 
-            window.paymentsPurchase = function(purchaseId) {
-                bridge.payments.purchase(purchaseId)
+            window.paymentsPurchase = function(options) {
+                if (options) {
+                    options = JSON.parse(options)
+                }
+                
+                bridge.payments.purchase(options)
                     .then(() => {
                         sendMessageToUnity('OnPaymentsPurchaseCompleted', 'true')
                     })
@@ -651,8 +645,12 @@
                     })
             }
 
-            window.paymentsConsumePurchase = function(purchaseToken) {
-                bridge.payments.consumePurchase(purchaseToken)
+            window.paymentsConsumePurchase = function(options) {
+                if (options) {
+                    options = JSON.parse(options)
+                }
+                
+                bridge.payments.consumePurchase(options)
                     .then(() => {
                         sendMessageToUnity('OnPaymentsConsumePurchaseCompleted', 'true')
                     })
@@ -709,8 +707,6 @@
             window.remoteConfigGet = function(options) {
                 if (options) {
                     options = JSON.parse(options)
-                } else {
-                    options = { clientFeatures: [] }
                 }
 
                 bridge.remoteConfig.get(options)
